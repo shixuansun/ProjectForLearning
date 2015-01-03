@@ -1,49 +1,23 @@
 #include "Helper.h"
 
 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-    ListNode *pHead = new ListNode(0);
-    ListNode *pCur = pHead;
-    ListNode *pTemp = NULL;
+    ListNode *pDummyHead = new ListNode(0);
+    ListNode *pCur = pDummyHead;
     int carry = 0;
 
-    while (l1 != NULL && l2 != NULL)
+    while (l1 != NULL || l2 != NULL)
     {
-        int val = l1->val + l2->val + carry;
+        int x = l1 != NULL ? l1->val : 0;
+        int y = l2 != NULL ? l2->val : 0;
+        int val = x + y + carry;
 
-        if (val >= 10)
-        {
-            val -= 10;
-            carry = 1;
-        }
-        else
-        {
-            carry = 0;
-        }
+        carry = val / 10;
 
-        pCur->next = new ListNode(val);
+        pCur->next = new ListNode(val % 10);
         pCur = pCur->next;
-        l1 = l1->next;
-        l2 = l2->next;
-    }
 
-    pTemp = l1 == NULL ? l2 : l1;
-
-    while (pTemp != NULL)
-    {
-        int val = pTemp->val + carry;
-        if (val >= 10)
-        {
-            val -= 10;
-            carry = 1;
-        }
-        else
-        {
-            carry = 0;
-        }
-
-        pCur->next = new ListNode(val);
-        pCur = pCur->next;
-        pTemp = pTemp->next;
+        l1 != NULL ? l1 = l1->next : NULL;
+        l2 != NULL ? l2 = l2->next : NULL;
     }
 
     if (carry != 0)
@@ -51,8 +25,8 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
         pCur->next = new ListNode(1);
     }
 
-    pCur = pHead->next;
-    delete pHead;
+    pCur = pDummyHead->next;
+    delete pDummyHead;
 
     return pCur;
 }
